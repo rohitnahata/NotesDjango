@@ -1,0 +1,7 @@
+<div class='label-list'>
+  {% for label in labels %}
+  <a href="{% url 'notes:index' %}?label={{ label.text }}" style="color: {{label.text_color}};background-color: {{label.background_color}}">
+  	{{ label.text }}
+	</a>
+  {% endfor %}
+</div>

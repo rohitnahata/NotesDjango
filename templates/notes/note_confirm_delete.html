@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load add_class %}
+{% load error_messages %}
+
+{% block content %}
+<div>
+  <form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object.note_title }}"?</p>
+    <a class="btn btn-primary" href="{% url 'users:profile' %}">Back</a>
+    <button class="btn btn-danger" type="submit">Delete</button>
+  </form>
+</div>
+{% endblock %}

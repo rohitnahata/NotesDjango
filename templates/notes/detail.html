@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load label_list_note %}
+
+{% block nav %}
+<a href="{% url 'notes:index' %}">Back to all notes</a>
+{% endblock %}
+
+{% block content %}
+  {% if note %}
+  <h2>{{ note.note_title }}</h2>
+  <p class="note-body">{{note.note_text }}</p>
+  <p>Author: <a href="{% url 'notes:index' %}?user={{note.author.username}}">{{note.author.username}}</a></p>
+  <p class="small">{{note.pub_date}}</p>
+  {% label_list_note note.labels.all %}
+
+    {% if user.is_authenticated and user == note.author %}
+      <a class="btn btn-default pull-right" href="{% url 'notes:edit' note.id %}">Edit</a>
+    {% endif %}
+  {% else %}
+    <p>That note doesn't seem to exist.</p>
+  {% endif %}
+{% endblock %}

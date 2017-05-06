@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load add_class %}
+{% load error_messages %}
+
+{% block content %}
+    <div>
+        <div class="compose-wrapper row">
+            <form class="col-xs-12 form-horizontal" action="" method="post">
+                {% csrf_token %}
+                {% error_messages form.non_field_errors %}
+                <div class="form-group">
+                    {% error_messages form.note_title.errors %}
+                    <label class="col-xs-1" for="id_note_title">Title:</label>
+                    <div class="col-xs-5">{{ form.note_title|add_class:"form-control" }}</div>
+                </div>
+                <div class="form-group">
+                    {% error_messages form.note_text.errors %}
+                    <label class="col-xs-1" for="id_note_text">Body:</label>
+                    <div class="col-xs-11">{{ form.note_text|add_class:"form-control" }}</div>
+                </div>
+                <div class="form-group">
+                    {% error_messages form.labels.errors %}
+                    <label class="col-xs-1" for="id_labels">Labels:</label>
+                    <div class="col-xs-11">{{ form.labels|add_class:"form-control" }}</div>
+                </div>
+                <div class="form-group">
+                    {% error_messages form.public.errors %}
+                    <label class="col-xs-1" for="id_public">Public:</label>
+                    <div class="col-xs-1">{{ form.public| add_class:"form-control" }}</div>
+                </div>
+
+                <button type="submit" class="btn btn-default pull-right">Publish</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

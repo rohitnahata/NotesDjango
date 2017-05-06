@@ -1,0 +1,5 @@
+{% if errors %}
+  {% for error in errors %}
+    <p class="error bg-danger">{{ error|escape }}</p>
+  {% endfor %}
+{% endif %}
