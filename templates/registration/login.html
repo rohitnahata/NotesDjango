@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% load add_class %}
+{% load socialaccount %}
 
 {% block content %}
+    {#<a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook Login</a>#}
+    <a href="{% provider_login_url "google" method="oauth2" %}">Google OAuth2</a>
 <div class="row">
 	<form class="col-xs-12 col-sm-4 form-horizontal" action="{% url 'users:login' %}" method="post">
 		{% csrf_token %}
