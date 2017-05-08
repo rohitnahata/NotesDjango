@@ -59,13 +59,8 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_receiver, sender=Note)
 
 
-class Images(models.Model):
-    note = models.ForeignKey(Note, default=None)
-    image = models.ImageField(upload_to=get_image_filename,
-                              verbose_name='Image', )
-
-
 class Label(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=200, default="")
     background_color = models.CharField(max_length=7, default="#ffffff")
     text_color = models.CharField(max_length=6, default="000000")

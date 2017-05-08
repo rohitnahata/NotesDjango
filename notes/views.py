@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseRedirect
 # Create your views here.
 from django.urls import reverse
@@ -15,7 +16,11 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         queryset = Note.objects.all()
-
+        user = self.request.user
+        if user is AnonymousUser:
+            print("no user")
+        else:
+            pass
         label_param = self.request.GET.get('label')
         user_param = self.request.GET.get('user')
         queryset = queryset.filter(public=True)

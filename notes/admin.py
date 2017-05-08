@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Note, Label
 
 
@@ -14,8 +15,9 @@ class NoteModelAdmin(admin.ModelAdmin):
 
 
 class LabelModelAdmin(admin.ModelAdmin):
-    list_display = ["text", "background_color", "text_color"]
-    search_fields = ["text"]
+    list_display = ["text", "background_color", "user", "text_color"]
+    search_fields = ["text", "user"]
+    list_filter = ["user"]
 
     class Meta:
         model = Note
