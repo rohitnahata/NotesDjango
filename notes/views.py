@@ -1,11 +1,12 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 # Create your views here.
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
-from notes.forms import NoteForm
-from notes.models import Note
+from notes.forms import NoteForm, LabelForm
+from notes.models import Note, Label
 
 
 class IndexView(generic.ListView):
@@ -36,6 +37,29 @@ class DetailView(generic.DetailView):
         user_param = self.request.user
         queryset = Note.objects.filter(author__username=user_param)
         return queryset.filter(pub_date__lte=timezone.now())
+
+
+class ComposeLabelView(generic.CreateView):
+    model = Label
+    form_class = LabelForm
+    template_name_suffix = '_new_form'
+    success_url = '/users/profile'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            label = form.save(commit=False)
+            if Label.objects.filter(text=form.cleaned_data['text']).exists():
+                messages.warning(request, "Label already exists")
+                # raise ValidationError("This label already exists")
+            else:
+                label.save()
+                messages.success(request, "Label successfully saved")
+
+        else:
+            messages.error(request, "Invalid Form")
+            # raise ValidationError("Invalid Form")
+        return HttpResponseRedirect(reverse('users:profile'))
 
 
 class ComposeView(generic.CreateView):

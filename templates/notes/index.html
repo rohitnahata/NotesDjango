@@ -4,25 +4,27 @@
 {% load label_list_nav %}
 
 {% block nav %}
-	{% label_list_nav request %}
+    {% label_list_nav request %}
 {% endblock %}
 
 {% block content %}
-{% if latest_notes_list %}
-<div class="note-wrapper">
-  {% for note in latest_notes_list %}
-  <div class="note-item">
-    <div class="note-content">
-      <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
-      <p class="note-body">{{ note.note_text }}</p>
-      <p>Author: <a href="{% url 'notes:index' %}?user={{note.author.username}}">{{note.author.username}}</a></p>
-      <p class="small">{{note.pub_date}}</p>
-      {% label_list_note note.labels.all %}
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% else %}
-<p>No notes are available.</p>
-{% endif %}
+    {% if latest_notes_list %}
+        <div class="note-wrapper">
+            {% for note in latest_notes_list %}
+                <div class="note-item">
+                    <div class="note-content">
+                        <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
+                        <p class="note-body">{{ note.note_text }}</p>
+                        <p>Author: <a
+                                href="{% url 'notes:index' %}?user={{ note.author.username }}">{{ note.author.username }}</a>
+                        </p>
+                        <p class="small">{{ note.pub_date }}</p>
+                        {% label_list_note note.labels.all %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No notes are available.</p>
+    {% endif %}
 {% endblock %}
