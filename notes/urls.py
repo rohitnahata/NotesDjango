@@ -1,6 +1,6 @@
 from django.conf.urls import url
+
 from . import views
-from django.views import View
 
 app_name = 'notes'
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete/$', views.DeleteView.as_view(), name='delete'),
     # ex: /notes/compose
     url(r'^compose/$', views.ComposeView.as_view(), name='compose'),
+    url(r'^compose/$', views.ComposeView.as_view(), name='createLabel'),
+
 ]

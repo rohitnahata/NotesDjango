@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-
 # Create your views here.
 from django.urls import reverse
 from django.utils import timezone
@@ -21,7 +20,6 @@ class IndexView(generic.ListView):
         queryset = queryset.filter(public=True)
         if label_param is not None:
             queryset = queryset.filter(labels__text=label_param)
-        print(user_param)
         if user_param is not None:
             queryset = queryset.filter(author__username=user_param)
         return queryset.filter(

@@ -6,45 +6,50 @@
 {% load error_messages %}
 
 {% block content %}
-<div class="profile-content">
+    <div class="profile-content">
 
-  <a class="btn btn-default pull-right" href="{% url 'notes:compose' %}">COMPOSE NOTE</a>
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Your notes</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-  </ul>
+        <a class="btn btn-success pull-right" href="{% url 'notes:compose' %}">COMPOSE NOTE</a>
+        <a class="btn btn-success pull-right" style="margin-right: 10px" href="{% url 'notes:createLabel' %}">CREATE
+            LABEL</a>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="home">
-      <div class="note-wrapper">
-        {% if notes %}
-        {% for note in notes %}
-        <div class="note-item">
-        <div class="note-controls">
-          <a class="btn btn-success" href="{% url 'notes:detail' note.id %}">View</a>
-          <a class="btn btn-primary" href="{% url 'notes:edit' note.id %}">Edit</a>
-          <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Your
+                notes</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
+                                       data-toggle="tab">Settings</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class="note-wrapper">
+                    {% if notes %}
+                        {% for note in notes %}
+                            <div class="note-item">
+                                <div class="note-controls">
+                                    <a class="btn btn-success" href="{% url 'notes:detail' note.id %}">View</a>
+                                    <a class="btn btn-primary" href="{% url 'notes:edit' note.id %}">Edit</a>
+                                    <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
+                                </div>
+                                <div class="note-content">
+                                    <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
+                                    <p class="note-body">{{ note.note_text }}</p>
+                                    <p class="small">{{ note.pub_date }}</p>
+                                    {% label_list_note note.labels.all %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>You haven't authored any notes yet!</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="settings">
+                <p>Username: {{ user.username }}</p>
+                <p>Some other stuffs...</p>
+            </div>
         </div>
-          <div class="note-content">
-            <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
-            <p class="note-body">{{ note.note_text }}</p>
-            <p class="small">{{note.pub_date}}</p>
-            {% label_list_note note.labels.all %}
-          </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <p>You haven't authored any notes yet!</p>
-        {% endif %}
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane fade" id="settings">
-      <p>Username: {{user.username}}</p>
-      <p>Some other stuffs...</p>
-    </div>
-  </div>
 
-</div>
+    </div>
 {% endblock %}

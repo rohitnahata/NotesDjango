@@ -25,13 +25,16 @@ handler403 = curry(permission_denied, template_name='403.html')
 
 
 urlpatterns = [
-    url(r'^accounts/', include('allauth.urls')),
-    url(r'^api/notes/', include('notes.api.urls', namespace='notes_api')),
     url(r'^', include('notes.urls', namespace='notes')),
     url(r'^users/', include('users.urls', namespace='users')),
-    url(r'^api/users/', include('users.api.urls', namespace='users_api')),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/users/', include('users.api.urls', namespace='users_api')),
+    url(r'^api/notes/', include('notes.api.urls', namespace='notes_api')),
     url(r'^api/token/auth/', obtain_jwt_token),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+
 ]
 
 

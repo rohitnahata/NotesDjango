@@ -1,4 +1,6 @@
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from django.contrib.auth import get_user_model
+from rest_auth.registration.views import SocialLoginView
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -8,6 +10,11 @@ from rest_framework.views import APIView
 from .serializers import UserCreateSerializer, UserListSerializer, UserLoginSerializer
 
 User = get_user_model()
+
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+
 
 
 class UserCreateAPIView(CreateAPIView):

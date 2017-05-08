@@ -1,6 +1,6 @@
 from django.forms import ModelForm, ImageField
 
-from .models import Note, Images
+from .models import Note, Images, Label
 
 
 class NoteForm(ModelForm):
@@ -15,3 +15,9 @@ class ImageForm(ModelForm):
     class Meta:
         model = Images
         fields = ('image',)
+
+
+class LabelForm(ModelForm):
+    class Meta:
+        model = Label
+        exclude = ()
