@@ -38,10 +38,18 @@ class DetailView(generic.DetailView):
     template_name = 'notes/detail.html'
 
     def get_queryset(self):
-        """ Exclude notes that haven't been published yet """
-        user_param = self.request.user
-        queryset = Note.objects.filter(author__username=user_param)
-        return queryset.filter(pub_date__lte=timezone.now())
+        return Note.objects.filter(pub_date__lte=timezone.now())
+
+    def get_object(self, queryset=None):
+        object = super(DetailView, self).get_object()
+        queryset = Note.objects.filter(author__username=self.request.user)
+        if queryset.count() > 0:
+            return object
+        queryset = Note.objects.filter(note_title__exact=object).filter(public=True)
+        if queryset.count() > 0:
+            return object
+        else:
+            return None
 
 
 class ComposeLabelView(generic.CreateView):
