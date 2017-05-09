@@ -9,7 +9,6 @@ class NoteForm(ModelForm):
         fields = ['note_title', 'note_text', 'labels', 'public']
 
 
-
 class LabelForm(ModelForm):
     class Meta:
         model = Label
