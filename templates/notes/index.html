@@ -21,8 +21,11 @@
                         <p class="small">{{ note.pub_date }} {{ note.public }}</p>
                         {% label_list_note note.labels.all %}
                         {% if note.public %}
-                            <p>wdqdef</p>
+                            <p class="note-public">Public Note</p>
+                        {% else %}
+                            <p class="note-public">Private Note</p>
                         {% endif %}
+
                     </div>
                 </div>
             {% endfor %}

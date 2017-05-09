@@ -69,8 +69,13 @@ h2 {
 	border-bottom: 1px solid black;
 }
 
-.note-body {
+.note-body, .note-public {
 	font-family: 'Open Sans', sans-serif;
+}
+
+.note-public {
+    padding-top: 10px;
+    font-weight: bold;
 }
 
 .label-list a {

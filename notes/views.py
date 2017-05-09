@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.models import AnonymousUser
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 # Create your views here.
 from django.urls import reverse
@@ -17,13 +17,9 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         queryset = Note.objects.all()
         user = self.request.user
-        if user is AnonymousUser:
-            print("no user")
-        else:
-            pass
         label_param = self.request.GET.get('label')
         user_param = self.request.GET.get('user')
-        queryset = queryset.filter(public=True)
+        queryset = queryset.filter(Q(public=True) | Q(author__username=user))
         if label_param is not None:
             queryset = queryset.filter(labels__text=label_param)
         if user_param is not None:
@@ -62,7 +58,8 @@ class ComposeLabelView(generic.CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             label = form.save(commit=False)
-            if Label.objects.filter(text=form.cleaned_data['text']).exists():
+            queryset = Label.objects.filter(user__username=request.user)
+            if queryset.filter(text=form.cleaned_data['text']).exists():
                 messages.warning(request, "Label already exists")
                 # raise ValidationError("This label already exists")
             else:
