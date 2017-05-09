@@ -77,6 +77,11 @@ class ComposeView(generic.CreateView):
     def get_success_url(self):
         return reverse('notes:detail', kwargs={'pk': self.object.id})
 
+    def get_context_data(self, **kwargs):
+        context = super(ComposeView, self).get_context_data(**kwargs)
+        context['form'].fields['labels'].queryset = Label.objects.filter(user=self.request.user)
+        return context
+
     def post(self, request, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
