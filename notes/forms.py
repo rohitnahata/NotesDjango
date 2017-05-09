@@ -12,4 +12,4 @@ class NoteForm(ModelForm):
 class LabelForm(ModelForm):
     class Meta:
         model = Label
-        exclude = ()
+        exclude = ('user',)

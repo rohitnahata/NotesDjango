@@ -58,13 +58,10 @@ class ComposeLabelView(generic.CreateView):
                 messages.warning(request, "Label already exists")
                 # raise ValidationError("This label already exists")
             else:
+                label.user = request.user
                 label.save()
                 messages.success(request, "Label successfully saved")
-
-        else:
-            messages.error(request, "Invalid Form")
-            # raise ValidationError("Invalid Form")
-        return HttpResponseRedirect(reverse('users:profile'))
+            return HttpResponseRedirect(reverse('users:profile'))
 
 
 class ComposeView(generic.CreateView):

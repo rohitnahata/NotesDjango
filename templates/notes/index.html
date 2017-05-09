@@ -4,7 +4,7 @@
 {% load label_list_nav %}
 
 {% block nav %}
-    {% label_list_nav request %}
+    {% label_list_nav request user %}
 {% endblock %}
 
 {% block content %}
@@ -18,8 +18,11 @@
                         <p>Author: <a
                                 href="{% url 'notes:index' %}?user={{ note.author.username }}">{{ note.author.username }}</a>
                         </p>
-                        <p class="small">{{ note.pub_date }}</p>
+                        <p class="small">{{ note.pub_date }} {{ note.public }}</p>
                         {% label_list_note note.labels.all %}
+                        {% if note.public %}
+                            <p>wdqdef</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

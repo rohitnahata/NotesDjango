@@ -46,9 +46,10 @@ def create_slug(text, new_slug=None):
     return slug
 
 
-def get_image_filename(filename):
-    slug = create_slug(filename)
-    return "post_images/%s" % slug
+#
+# def get_image_filename(filename):
+#     slug = create_slug(filename)
+#     return "post_images/%s" % slug
 
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
@@ -63,7 +64,7 @@ class Label(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=200, default="")
     background_color = models.CharField(max_length=7, default="#ffffff")
-    text_color = models.CharField(max_length=6, default="000000")
+    text_color = models.CharField(max_length=7, default="#000000")
 
     def __str__(self):
         return self.text
