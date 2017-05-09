@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-# Create your views here.
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
@@ -99,10 +98,27 @@ class EditView(generic.UpdateView):
     form_class = NoteForm
     template_name_suffix = '_update_form'
 
+    def get_context_data(self, **kwargs):
+        context = super(EditView, self).get_context_data(**kwargs)
+        context['form'].fields['labels'].queryset = Label.objects.filter(user=self.request.user)
+        return context
+
     def get_success_url(self):
         return reverse('notes:detail', kwargs={'pk': self.object.id})
 
 
+class EditLabelView(generic.UpdateView):
+    model = Label
+    form_class = LabelForm
+    template_name_suffix = '_update_form'
+    success_url = '/users/profile'
+
+
 class DeleteView(generic.DeleteView):
     model = Note
+    success_url = '/users/profile'
+
+
+class DeleteLabelView(generic.DeleteView):
+    model = Label
     success_url = '/users/profile'

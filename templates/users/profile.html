@@ -16,46 +16,62 @@
 
     <div class="profile-content">
 
-        <a class="btn btn-success pull-right" href="{% url 'notes:compose' %}">COMPOSE NOTE</a>
-        <a class="btn btn-success pull-right" style="margin-right: 10px" href="{% url 'notes:createLabel' %}">CREATE
-            LABEL</a>
+    <a class="btn btn-success pull-right" href="{% url 'notes:compose' %}">COMPOSE NOTE</a>
+    <a class="btn btn-success pull-right" style="margin-right: 10px" href="{% url 'notes:createLabel' %}">CREATE
+        LABEL</a>
 
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Your
-                notes</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
-                                       data-toggle="tab">Settings</a></li>
-        </ul>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Your
+            notes</a></li>
+        <li role="presentation"><a href="#labels" aria-controls="labels" role="tab" data-toggle="tab">Your
+            labels</a></li>
+    </ul>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="home">
-                <div class="note-wrapper">
-                    {% if notes %}
-                        {% for note in notes %}
-                            <div class="note-item">
-                                <div class="note-controls">
-                                    <a class="btn btn-success" href="{% url 'notes:detail' note.id %}">View</a>
-                                    <a class="btn btn-primary" href="{% url 'notes:edit' note.id %}">Edit</a>
-                                    <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
-                                </div>
-                                <div class="note-content">
-                                    <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
-                                    <p class="note-body">{{ note.note_text }}</p>
-                                    <p class="small">{{ note.pub_date }}</p>
-                                    {% label_list_note note.labels.all %}
-                                </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="home">
+            <div class="note-wrapper">
+                {% if notes %}
+                    {% for note in notes %}
+                        <div class="note-item">
+                            <div class="note-controls">
+                                <a class="btn btn-success" href="{% url 'notes:detail' note.id %}">View</a>
+                                <a class="btn btn-primary" href="{% url 'notes:edit' note.id %}">Edit</a>
+                                <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>You haven't authored any notes yet!</p>
-                    {% endif %}
-                </div>
+                            <div class="note-content">
+                                <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
+                                <p class="note-body">{{ note.note_text }}</p>
+                                <p class="small">{{ note.pub_date }}</p>
+                                {% label_list_note note.labels.all %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You haven't authored any notes yet!</p>
+                {% endif %}
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="settings">
-                <p>Username: {{ user.username }}</p>
-                <p>Some other stuffs...</p>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="labels">
+            {% if labels %}
+                <div class="row">
+                {% for label in labels %}
+                    <div class="row" style="margin-bottom: 10px">
+
+                        <div class="col-xs-2 col-xs-offset-1 text-center my_label_class"
+                             style="color: {{ label.text_color }}; background-color: {{ label.background_color }}"> {{ label.text }}</div>
+                        <div class="col-xs-2 col-xs-offset-1 text-center "><a
+                                href="{% url 'notes:editLabel' label.id %}" style="color: #325d88;">Edit</a></div>
+                        <div class="col-xs-2 col-xs-offset-1 text-center "><a
+                                href="{% url 'notes:deleteLabel' label.id %}" style="color: #d9534f">Delete</a></div>
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                <p>You haven't created any labels yet!</p>
+            {% endif %}
+
             </div>
         </div>
 

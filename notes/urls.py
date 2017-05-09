@@ -14,6 +14,11 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete/$', views.DeleteView.as_view(), name='delete'),
     # ex: /notes/compose
     url(r'^compose/$', views.ComposeView.as_view(), name='compose'),
-    url(r'^newlabel/$', views.ComposeLabelView.as_view(), name='createLabel'),
+
+    url(r'^newLabel/$', views.ComposeLabelView.as_view(), name='createLabel'),
+
+    url(r'^(?P<pk>[0-9]+)/editLabel/$', views.EditLabelView.as_view(), name='editLabel'),
+
+    url(r'^(?P<pk>[0-9]+)/deleteLabel/$', views.DeleteLabelView.as_view(), name='deleteLabel'),
 
 ]

@@ -145,3 +145,11 @@ h2 {
 		clear: both;
 	}
 }
+
+.labels {
+    margin: 0 5px;
+}
+
+.my_label_class {
+    padding: 5px;
+}

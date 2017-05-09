@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
 
-from notes.models import Note
+from notes.models import Note, Label
 
 
 def index(request):
@@ -34,7 +34,7 @@ class SignupView(generic.View):
             password = form.cleaned_data['password1']
             new_user = authenticate(username=username, password=password, )
             login(request, new_user)
-            return HttpResponseRedirect(reverse('notes:index'))
+            return HttpResponseRedirect(reverse('users:profile'))
         return render(request, self.template_name, {'form': form})
 
 
@@ -45,5 +45,7 @@ class ProfileView(generic.DetailView):
     def get(self, request, **kwargs):
         if request.user.is_authenticated():
             notes = Note.objects.filter(author=request.user).order_by('-pub_date')
-            return render(request, self.template_name, {'notes': notes})
+            labels = Label.objects.filter(user__username=request.user)
+            print(notes, labels)
+            return render(request, self.template_name, {'notes': notes, 'labels': labels})
         return HttpResponseRedirect(reverse('notes:index'))
