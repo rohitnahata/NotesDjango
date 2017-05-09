@@ -1,5 +1,6 @@
 import datetime
 
+from colorful.fields import RGBColorField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_save
@@ -63,8 +64,8 @@ pre_save.connect(pre_save_post_receiver, sender=Note)
 class Label(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=200, default="")
-    background_color = models.CharField(max_length=7, default="#ffffff")
-    text_color = models.CharField(max_length=7, default="#000000")
+    background_color = RGBColorField(default="#ffffff")
+    text_color = RGBColorField(default="#000000")
 
     def __str__(self):
         return self.text
