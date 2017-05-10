@@ -72,7 +72,7 @@ class ComposeView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ComposeView, self).get_context_data(**kwargs)
-        context['form'].fields['labels'].queryset = Label.objects.filter(user=self.request.user)
+        context['form'].fields['labels'].queryset = Label.objects.filter(author=self.request.user)
         return context
 
     def post(self, request, **kwargs):
