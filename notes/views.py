@@ -9,6 +9,20 @@ from notes.forms import NoteForm, LabelForm, NoteArchiveForm
 from notes.models import Note, Label
 
 
+class DispatchFunction(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect(reverse('users:profile'))
+        return super(DispatchFunction, self).dispatch(
+            request, *args, **kwargs)
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.author == request.user
+        return False
+
+
 class IndexView(generic.ListView):
     template_name = 'notes/index.html'
     context_object_name = 'latest_notes_list'
@@ -37,35 +51,15 @@ class DetailView(generic.DetailView):
 
     def get_object(self, queryset=None):
         object = super(DetailView, self).get_object()
-        queryset = Note.objects.filter(author__username=self.request.user)
+        queryset_main = Note.objects.filter(id=object.id)
+        queryset = queryset_main.filter(author__username=self.request.user)
         if queryset.count() > 0:
             return object
-        queryset = Note.objects.filter(note_title__exact=object).filter(public=True).filter(archived=False)
+        queryset = queryset_main.filter(public=True).filter(archived=False)
         if queryset.count() > 0:
             return object
         else:
             return None
-
-
-class ComposeLabelView(generic.CreateView):
-    model = Label
-    form_class = LabelForm
-    template_name_suffix = '_new_form'
-    success_url = '/users/profile'
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            label = form.save(commit=False)
-            queryset = Label.objects.filter(user__username=request.user)
-            if queryset.filter(text=form.cleaned_data['text']).exists():
-                messages.warning(request, "Label already exists")
-                # raise ValidationError("This label already exists")
-            else:
-                label.user = request.user
-                label.save()
-                messages.success(request, "Label successfully saved")
-            return HttpResponseRedirect(reverse('users:profile'))
 
 
 class ComposeView(generic.CreateView):
@@ -93,7 +87,28 @@ class ComposeView(generic.CreateView):
                 reverse('notes:detail', kwargs={'pk': note.id}))
 
 
-class EditView(generic.UpdateView):
+class ComposeLabelView(generic.CreateView):
+    model = Label
+    form_class = LabelForm
+    template_name_suffix = '_new_form'
+    success_url = '/users/profile'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            label = form.save(commit=False)
+            queryset = Label.objects.filter(user__username=request.user)
+            if queryset.filter(text=form.cleaned_data['text']).exists():
+                messages.warning(request, "Label already exists")
+                # raise ValidationError("This label already exists")
+            else:
+                label.user = request.user
+                label.save()
+                messages.success(request, "Label successfully saved")
+            return HttpResponseRedirect(reverse('users:profile'))
+
+
+class EditView(generic.UpdateView, DispatchFunction):
     model = Note
     form_class = NoteForm
     template_name_suffix = '_update_form'
@@ -107,24 +122,24 @@ class EditView(generic.UpdateView):
         return reverse('notes:detail', kwargs={'pk': self.object.id})
 
 
-class EditLabelView(generic.UpdateView):
+class EditLabelView(generic.UpdateView, DispatchFunction):
     model = Label
     form_class = LabelForm
     template_name_suffix = '_update_form'
     success_url = '/users/profile'
 
 
-class DeleteView(generic.DeleteView):
+class DeleteView(generic.DeleteView, DispatchFunction):
     model = Note
     success_url = '/users/profile'
 
 
-class DeleteLabelView(generic.DeleteView):
+class DeleteLabelView(generic.DeleteView, DispatchFunction):
     model = Label
     success_url = '/users/profile'
 
 
-class UnarchiveView(generic.UpdateView):
+class UnarchiveView(generic.UpdateView, DispatchFunction):
     model = Note
     form_class = NoteArchiveForm
     success_url = '/users/profile'

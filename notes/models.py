@@ -6,7 +6,6 @@ from django.db import models
 class Note(models.Model):
     note_title = models.CharField(max_length=200)
     note_text = models.TextField(max_length=10000)
-    # slug = models.SlugField(unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)

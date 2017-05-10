@@ -88,7 +88,7 @@
                 {% for label in labels %}
                     <div class="row" style="margin-bottom: 10px">
 
-                        <div class="col-xs-2 col-xs-offset-1 text-center my_label_class"
+                        <div class="col-xs-2 col-xs-offset-1 text-center my_label_class btn btn-default"
                              style="color: {{ label.text_color }}; background-color: {{ label.background_color }}"> {{ label.text }}</div>
                         <div class="col-xs-2 col-xs-offset-1 text-center "><a
                                 href="{% url 'notes:editLabel' label.id %}" style="color: #325d88;">Edit</a></div>
