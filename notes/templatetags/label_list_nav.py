@@ -10,6 +10,6 @@ register = template.Library()
 def label_list_nav(request, user):
     curr_label = request.GET.get('label')
     return {
-        'labels': Label.objects.all().filter(Q(user__username=user)),
+        'labels': Label.objects.all().filter(Q(author__username=user)),
         'curr_label': curr_label
     }

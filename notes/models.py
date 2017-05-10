@@ -55,7 +55,7 @@ class Note(models.Model):
 
 
 class Label(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=200, default="")
     background_color = RGBColorField(default="#ffffff")
     text_color = RGBColorField(default="#000000")

@@ -18,4 +18,4 @@ class NoteArchiveForm(ModelForm):
 class LabelForm(ModelForm):
     class Meta:
         model = Label
-        exclude = ('user',)
+        exclude = ('author',)

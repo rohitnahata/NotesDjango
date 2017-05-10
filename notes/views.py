@@ -97,12 +97,12 @@ class ComposeLabelView(generic.CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             label = form.save(commit=False)
-            queryset = Label.objects.filter(user__username=request.user)
+            queryset = Label.objects.filter(author__username=request.user)
             if queryset.filter(text=form.cleaned_data['text']).exists():
                 messages.warning(request, "Label already exists")
                 # raise ValidationError("This label already exists")
             else:
-                label.user = request.user
+                label.author = request.user
                 label.save()
                 messages.success(request, "Label successfully saved")
             return HttpResponseRedirect(reverse('users:profile'))

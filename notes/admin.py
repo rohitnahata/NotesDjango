@@ -15,9 +15,9 @@ class NoteModelAdmin(admin.ModelAdmin):
 
 
 class LabelModelAdmin(admin.ModelAdmin):
-    list_display = ["text", "background_color", "user", "text_color"]
-    search_fields = ["text", "user"]
-    list_filter = ["user"]
+    list_display = ["text", "background_color", "author", "text_color"]
+    search_fields = ["text", "author"]
+    list_filter = ["author"]
 
     class Meta:
         model = Note

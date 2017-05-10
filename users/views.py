@@ -46,7 +46,7 @@ class ProfileView(generic.DetailView):
         if request.user.is_authenticated():
             notes_non_archived = Note.objects.filter(author=request.user).filter(archived=False).order_by('-updated')
             notes_archived = Note.objects.filter(author=request.user).filter(archived=True).order_by('-updated')
-            labels = Label.objects.filter(user__username=request.user)
+            labels = Label.objects.filter(author__username=request.user)
             return render(request, self.template_name,
                           {'notes': notes_non_archived, 'labels': labels, 'notes_archived': notes_archived})
         return HttpResponseRedirect(reverse('notes:index'))
