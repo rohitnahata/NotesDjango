@@ -5,8 +5,12 @@
       <w>backends</w>
       <w>browsable</w>
       <w>ffffff</w>
+      <w>findterms</w>
       <w>github</w>
+      <w>icontains</w>
+      <w>navbar</w>
       <w>newlabel</w>
+      <w>normspace</w>
       <w>reauthenticate</w>
       <w>reddit</w>
       <w>renderers</w>

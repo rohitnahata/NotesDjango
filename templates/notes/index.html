@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <form method='GET' action='' class="pull-right" style="margin-bottom: 10px">
+            <input type='text' name='q' placeholder='Search notes' value='{{ request.GET.q }}'/>
+            <input type='submit' value=&#128270; style="margin-right: 15px;">
+        </form>
+    </div>
     {% if latest_notes_list %}
         <div class="note-wrapper">
             {% for note in latest_notes_list %}

@@ -7,6 +7,9 @@ from django.views import generic
 
 from notes.forms import NoteForm, LabelForm, NoteArchiveForm
 from notes.models import Note, Label
+from notes.util import generic_search, isNotBlank
+
+MODEL_MAP = {Note: ["author__username", "note_title", "note_text", "labels__text"], }
 
 
 class DispatchFunction(generic.View):
@@ -32,11 +35,14 @@ class IndexView(generic.ListView):
         user = self.request.user
         label_param = self.request.GET.get('label')
         user_param = self.request.GET.get('user')
+        search_param = self.request.GET.get('q')
         queryset = queryset.filter(Q(public=True) | Q(author__username=user)).filter(archived=False)
-        if label_param is not None:
+        if isNotBlank(label_param):
             queryset = queryset.filter(labels__text=label_param)
-        if user_param is not None:
+        if isNotBlank(user_param):
             queryset = queryset.filter(author__username=user_param)
+        if isNotBlank(search_param):
+            queryset = search(search_param, queryset)
         return queryset.filter(
             updated__lte=timezone.now(),
         ).order_by('-updated')
@@ -144,3 +150,10 @@ class UnarchiveView(generic.UpdateView, DispatchFunction):
     form_class = NoteArchiveForm
     success_url = '/users/profile'
     template_name_suffix = '_unarchive'
+
+
+def search(query, queryset_main):
+    queryset = Note.objects.none()
+    for model, fields in MODEL_MAP.items():
+        queryset = queryset | generic_search(fields, query, queryset_main)
+    return queryset
