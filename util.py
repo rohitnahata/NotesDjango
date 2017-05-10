@@ -1,6 +1,11 @@
 import re
 
 from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
+
+from notes.models import Note
 
 
 def normalize_query(query_string,
@@ -46,3 +51,24 @@ def isNotBlank(my_string):
         return True
     # my_string is None OR my_string is empty or blank
     return False
+
+
+def search(query, queryset_main, MODEL_MAP):
+    queryset = Note.objects.none()
+    for model, fields in MODEL_MAP.items():
+        queryset = queryset | generic_search(fields, query, queryset_main)
+    return queryset
+
+
+class DispatchFunction(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect(reverse('users:profile'))
+        return super(DispatchFunction, self).dispatch(
+            request, *args, **kwargs)
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.author == request.user
+        return False

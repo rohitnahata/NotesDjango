@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.views import generic
 
 from notes.models import Note, Label
+from notes.views import search
+from util import isNotBlank
 
 
 def index(request):
@@ -44,8 +46,12 @@ class ProfileView(generic.DetailView):
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated():
+            search_param = self.request.GET.get('q')
             notes_non_archived = Note.objects.filter(author=request.user).filter(archived=False).order_by('-updated')
             notes_archived = Note.objects.filter(author=request.user).filter(archived=True).order_by('-updated')
+            if isNotBlank(search_param):
+                MODEL_MAP = {Note: ["note_title", "note_text", "labels__text"], }
+                notes_non_archived = search(search_param, notes_non_archived, MODEL_MAP)
             labels = Label.objects.filter(author__username=request.user)
             return render(request, self.template_name,
                           {'notes': notes_non_archived, 'labels': labels, 'notes_archived': notes_archived})

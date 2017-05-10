@@ -7,23 +7,7 @@ from django.views import generic
 
 from notes.forms import NoteForm, LabelForm, NoteArchiveForm
 from notes.models import Note, Label
-from notes.util import generic_search, isNotBlank
-
-MODEL_MAP = {Note: ["author__username", "note_title", "note_text", "labels__text"], }
-
-
-class DispatchFunction(generic.View):
-    def dispatch(self, request, *args, **kwargs):
-        if not self.user_passes_test(request):
-            return HttpResponseRedirect(reverse('users:profile'))
-        return super(DispatchFunction, self).dispatch(
-            request, *args, **kwargs)
-
-    def user_passes_test(self, request):
-        if request.user.is_authenticated():
-            self.object = self.get_object()
-            return self.object.author == request.user
-        return False
+from util import isNotBlank, search, DispatchFunction
 
 
 class IndexView(generic.ListView):
@@ -42,7 +26,8 @@ class IndexView(generic.ListView):
         if isNotBlank(user_param):
             queryset = queryset.filter(author__username=user_param)
         if isNotBlank(search_param):
-            queryset = search(search_param, queryset)
+            MODEL_MAP = {Note: ["author__username", "note_title", "note_text", "labels__text"], }
+            queryset = search(search_param, queryset, MODEL_MAP)
         return queryset.filter(
             updated__lte=timezone.now(),
         ).order_by('-updated')
@@ -121,7 +106,7 @@ class EditView(generic.UpdateView, DispatchFunction):
 
     def get_context_data(self, **kwargs):
         context = super(EditView, self).get_context_data(**kwargs)
-        context['form'].fields['labels'].queryset = Label.objects.filter(user=self.request.user)
+        context['form'].fields['labels'].queryset = Label.objects.filter(author=self.request.user)
         return context
 
     def get_success_url(self):
@@ -151,9 +136,3 @@ class UnarchiveView(generic.UpdateView, DispatchFunction):
     success_url = '/users/profile'
     template_name_suffix = '_unarchive'
 
-
-def search(query, queryset_main):
-    queryset = Note.objects.none()
-    for model, fields in MODEL_MAP.items():
-        queryset = queryset | generic_search(fields, query, queryset_main)
-    return queryset
