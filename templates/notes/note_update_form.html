@@ -29,6 +29,12 @@
                     <label class="col-xs-1" for="id_public">Public:</label>
                     <div class="col-xs-1">{{ form.public|add_class:"form-control" }}</div>
                 </div>
+                <div class="form-group">
+                    {% error_messages form.archived.errors %}
+                    <label class="col-xs-1" for="id_archived">Archive:</label>
+                    <div class="col-xs-1">{{ form.archived|add_class:"form-control" }}</div>
+                </div>
+
                 <button type="submit" class="btn btn-default pull-right">Update</button>
             </form>
         </div>

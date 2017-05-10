@@ -44,8 +44,9 @@ class ProfileView(generic.DetailView):
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated():
-            notes = Note.objects.filter(author=request.user).order_by('-pub_date')
+            notes_non_archived = Note.objects.filter(author=request.user).filter(archived=False).order_by('-updated')
+            notes_archived = Note.objects.filter(author=request.user).filter(archived=True).order_by('-updated')
             labels = Label.objects.filter(user__username=request.user)
-            print(notes, labels)
-            return render(request, self.template_name, {'notes': notes, 'labels': labels})
+            return render(request, self.template_name,
+                          {'notes': notes_non_archived, 'labels': labels, 'notes_archived': notes_archived})
         return HttpResponseRedirect(reverse('notes:index'))

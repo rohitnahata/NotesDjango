@@ -24,6 +24,9 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Your
             notes</a></li>
+        <li role="presentation"><a href="#archived" aria-controls="archived" role="tab" data-toggle="tab">Your
+            archived notes</a></li>
+
         <li role="presentation"><a href="#labels" aria-controls="labels" role="tab" data-toggle="tab">Your
             labels</a></li>
     </ul>
@@ -43,13 +46,39 @@
                             <div class="note-content">
                                 <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
                                 <p class="note-body">{{ note.note_text }}</p>
-                                <p class="small">{{ note.pub_date }}</p>
+                                <p class="small">Created : {{ note.timestamp }}</p>
+                                <p class="small">Last Updated : {{ note.updated }}</p>
                                 {% label_list_note note.labels.all %}
                             </div>
                         </div>
                     {% endfor %}
                 {% else %}
                     <p>You haven't authored any notes yet!</p>
+                {% endif %}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade in " id="archived">
+            <div class="note-wrapper">
+                {% if notes_archived %}
+                    {% for note in notes_archived %}
+                        <div class="note-item">
+                            <div class="note-controls">
+                                <a class="btn btn-success" href="{% url 'notes:detail' note.id %}">View</a>
+                                <a class="btn btn-primary" href="{% url 'notes:edit' note.id %}">Edit</a>
+                                <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
+                                <a class="btn btn-warning" href="{% url 'notes:unarchive' note.id %}">Unarchive</a>
+                            </div>
+                            <div class="note-content">
+                                <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
+                                <p class="note-body">{{ note.note_text }}</p>
+                                <p class="small">Created : {{ note.timestamp }}</p>
+                                <p class="small">Last Updated : {{ note.updated }}</p>
+                                {% label_list_note note.labels.all %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You don't have any notes archived yet!</p>
                 {% endif %}
             </div>
         </div>

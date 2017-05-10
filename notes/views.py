@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
-from notes.forms import NoteForm, LabelForm
+from notes.forms import NoteForm, LabelForm, NoteArchiveForm
 from notes.models import Note, Label
 
 
@@ -18,14 +18,14 @@ class IndexView(generic.ListView):
         user = self.request.user
         label_param = self.request.GET.get('label')
         user_param = self.request.GET.get('user')
-        queryset = queryset.filter(Q(public=True) | Q(author__username=user))
+        queryset = queryset.filter(Q(public=True) | Q(author__username=user)).filter(archived=False)
         if label_param is not None:
             queryset = queryset.filter(labels__text=label_param)
         if user_param is not None:
             queryset = queryset.filter(author__username=user_param)
         return queryset.filter(
-            pub_date__lte=timezone.now(),
-        ).order_by('-pub_date')
+            updated__lte=timezone.now(),
+        ).order_by('-updated')
 
 
 class DetailView(generic.DetailView):
@@ -33,14 +33,14 @@ class DetailView(generic.DetailView):
     template_name = 'notes/detail.html'
 
     def get_queryset(self):
-        return Note.objects.filter(pub_date__lte=timezone.now())
+        return Note.objects.filter(updated__lte=timezone.now())
 
     def get_object(self, queryset=None):
         object = super(DetailView, self).get_object()
         queryset = Note.objects.filter(author__username=self.request.user)
         if queryset.count() > 0:
             return object
-        queryset = Note.objects.filter(note_title__exact=object).filter(public=True)
+        queryset = Note.objects.filter(note_title__exact=object).filter(public=True).filter(archived=False)
         if queryset.count() > 0:
             return object
         else:
@@ -85,8 +85,8 @@ class ComposeView(generic.CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             note = form.save(commit=False)
-            note.pub_date = timezone.now()
             note.author = request.user
+            note.archived = False
             note.save()
             form.save_m2m()
             return HttpResponseRedirect(
@@ -122,3 +122,10 @@ class DeleteView(generic.DeleteView):
 class DeleteLabelView(generic.DeleteView):
     model = Label
     success_url = '/users/profile'
+
+
+class UnarchiveView(generic.UpdateView):
+    model = Note
+    form_class = NoteArchiveForm
+    success_url = '/users/profile'
+    template_name_suffix = '_unarchive'

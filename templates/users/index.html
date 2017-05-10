@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-  <div class="col-xs-12 text-center">
-    {% if user.is_authenticated %}
-    <h2>Welcome, {{ user.username }}!</h2>
-    <a class="btn btn-default" href="{% url 'notes:index' %}">NOTE FEED</a>
-    <a class="btn btn-default" href="{% url 'users:profile' %}">YOUR PROFILE</a>
-    {% else %}
-    <h2>Welcome!</h2>
-    <a class="btn btn-default" href="{% url 'users:signup' %}">SIGN UP</a>
-    <a class="btn btn-default" href="{% url 'users:login' %}">LOGIN</a>
-    {% endif %}
-  </div>
-</div>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            {% if user.is_authenticated %}
+                <h2>Welcome, {{ user.username }}!</h2>
+                <a class="btn btn-default" href="{% url 'notes:index' %}">NOTE FEED</a>
+                <a class="btn btn-default" href="{% url 'users:profile' %}">YOUR PROFILE</a>
+            {% else %}
+                <h2>Welcome!</h2>
+                <a class="btn btn-default" style="margin-right: 10px" href="{% url 'users:signup' %}">SIGN UP</a>
+                <a class="btn btn-default" href="{% url 'users:login' %}">LOGIN</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -21,7 +21,7 @@ class NoteComposeUpdateSerializer(ModelSerializer):
             "note_text",
             # "slug",
             # "author",
-            "pub_date",
+            # "pub_date",
             "timestamp"
         ]
 
