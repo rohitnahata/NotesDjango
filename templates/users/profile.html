@@ -4,6 +4,7 @@
 {% load label_list_nav %}
 {% load add_class %}
 {% load error_messages %}
+{% load humanize %}
 
 {% block content %}
     {% if messages %}
@@ -50,10 +51,12 @@
                                 <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Delete</a>
                             </div>
                             <div class="note-content">
-                                <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
-                                <p class="note-body">{{ note.note_text }}</p>
-                                <p class="small">Created : {{ note.timestamp }}</p>
-                                <p class="small">Last Updated : {{ note.updated }}</p>
+                                <h3>
+                                    <a href="{% url 'notes:detail' note.id %}">{{ note.note_title|truncatechars:255|linebreaks|title|urlize }}</a>
+                                </h3>
+                                <p class="note-body">{{ note.note_text|truncatechars:255|linebreaks|urlize }}</p>
+                                <p class="small">Created : {{ note.timestamp|naturalday }}</p>
+                                <p class="small">Last Updated : {{ note.updated|naturalday }}</p>
                                 {% label_list_note note.labels.all %}
                             </div>
                         </div>
@@ -75,10 +78,12 @@
                                 <a class="btn btn-warning" href="{% url 'notes:unarchive' note.id %}">Unarchive</a>
                             </div>
                             <div class="note-content">
-                                <h3><a href="{% url 'notes:detail' note.id %}">{{ note.note_title }}</a></h3>
-                                <p class="note-body">{{ note.note_text }}</p>
-                                <p class="small">Created : {{ note.timestamp }}</p>
-                                <p class="small">Last Updated : {{ note.updated }}</p>
+                                <h3>
+                                    <a href="{% url 'notes:detail' note.id %}">{{ note.note_title|truncatechars:255|linebreaks|title|urlize }}</a>
+                                </h3>
+                                <p class="note-body">{{ note.note_text|truncatechars:255|linebreaks|urlize }}</p>
+                                <p class="small">Created : {{ note.timestamp|naturalday }}</p>
+                                <p class="small">Last Updated : {{ note.updated|naturalday }}</p>
                                 {% label_list_note note.labels.all %}
                             </div>
                         </div>
