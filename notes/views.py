@@ -30,7 +30,7 @@ class IndexView(generic.ListView):
             queryset = search(search_param, queryset, MODEL_MAP)
         return queryset.filter(
             updated__lte=timezone.now(),
-        ).order_by('-updated')
+        ).order_by('-updated').order_by('-pinned')
 
 
 class DetailView(generic.DetailView):
@@ -135,4 +135,3 @@ class UnarchiveView(generic.UpdateView, DispatchFunction):
     form_class = NoteArchiveForm
     success_url = '/users/profile'
     template_name_suffix = '_unarchive'
-

@@ -21,7 +21,8 @@
                 <div class="note-item">
                     <div class="note-content">
                         <h3>
-                            <a href="{% url 'notes:detail' note.id %}">{{ note.note_title|truncatechars:255|linebreaks|title|urlize }}</a>
+                            <a href="{% url 'notes:detail' note.id %}">{{ note.note_title|truncatechars:255|title|urlize }}</a>
+                            <span class="pull-right">{% if note.pinned %}&#128204;{% endif %}</span>
                         </h3>
                         <p class="note-body">{{ note.note_text|truncatechars:255|linebreaks|urlize }}</p>
                         <p>Author: <a
@@ -31,9 +32,9 @@
                         <p class="small">Last Updated : {{ note.updated|naturalday }}</p>
                         {% label_list_note note.labels.all %}
                         {% if note.public %}
-                            <p class="note-public">Public Note</p>
+                            <p class="note-public">Public Note &#128275;</p>
                         {% else %}
-                            <p class="note-public">Private Note</p>
+                            <p class="note-public">Private Note &#128274;</p>
                         {% endif %}
 
                     </div>

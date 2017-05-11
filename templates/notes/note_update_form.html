@@ -34,6 +34,11 @@
                     <label class="col-xs-1" for="id_archived">Archive:</label>
                     <div class="col-xs-1">{{ form.archived|add_class:"form-control" }}</div>
                 </div>
+                <div class="form-group">
+                    {% error_messages form.pinned.errors %}
+                    <label class="col-xs-1" for="id_pinned">Pinned:</label>
+                    <div class="col-xs-1">{{ form.pinned| add_class:"form-control" }}</div>
+                </div>
 
                 <button type="submit" class="btn btn-default pull-right">Update</button>
             </form>
