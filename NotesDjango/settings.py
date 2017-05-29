@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'sslserver',
+
 ]
 
 SITE_ID = 2
