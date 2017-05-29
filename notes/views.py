@@ -30,7 +30,8 @@ class IndexView(generic.ListView):
             queryset = search(search_param, queryset, MODEL_MAP)
         return queryset.filter(
             updated__lte=timezone.now(),
-        ).order_by('-updated').order_by('-pinned')
+        ).order_by('-updated') \
+            # .order_by('-pinned')
 
 
 class DetailView(generic.DetailView):

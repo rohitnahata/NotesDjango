@@ -4,10 +4,24 @@ from .models import Note, Label
 
 
 class NoteModelAdmin(admin.ModelAdmin):
-    list_display = ["note_title", "author", "public", "archived", "pinned", "updated", "timestamp"]
+    list_display = [
+        "note_title",
+        "author",
+        "public",
+        "archived",
+        # "pinned",
+        "updated",
+        "timestamp"
+    ]
     # list_display_links = ["updated"]
     # list_editable = ["title"]
-    list_filter = ["updated", "timestamp", "public", "archived", "pinned"]
+    list_filter = [
+        "updated",
+        "timestamp",
+        "public",
+        "archived",
+        # "pinned"
+    ]
     search_fields = ["note_title", "note_text", "author"]
 
     class Meta:

@@ -5,11 +5,15 @@
 
 {% block nav %}
     <a href="{% url 'users:profile' %}">Back to your notes</a>
+    <br>
+    <a href="{% url 'notes:index' %}">Back to common notes</a>
 {% endblock %}
 
 {% block content %}
     {% if note %}
-        <h2>{{ note.note_title|title|urlize }}{% if note.pinned %}&#128204;{% endif %}</h2>
+        <h2>{{ note.note_title|title|urlize }}
+            {#            {% if note.pinned %}&#128204;{% endif %}#}
+        </h2>
         <p class="note-body">{{ note.note_text|linebreaks|urlize }}</p>
         <p>Author: <a href="{% url 'notes:index' %}?user={{ note.author.username }}">{{ note.author.username }}</a></p>
         <p class="small">Created : {{ note.timestamp }}</p>

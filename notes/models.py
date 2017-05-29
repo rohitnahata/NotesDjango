@@ -12,7 +12,8 @@ class Note(models.Model):
     labels = models.ManyToManyField('Label', related_name='notes')
     public = models.BooleanField(default=0)
     archived = models.BooleanField(default=0)
-    pinned = models.BooleanField(default=0)
+
+    # pinned = models.BooleanField(default=0)
 
     # def was_published_recently(self):
     #     now = timezone.now()

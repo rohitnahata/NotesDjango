@@ -6,7 +6,13 @@ from .models import Note, Label
 class NoteForm(ModelForm):
     class Meta:
         model = Note
-        fields = ['note_title', 'note_text', 'labels', 'public', 'archived', 'pinned']
+        fields = ['note_title',
+                  'note_text',
+                  'labels',
+                  'public',
+                  'archived',
+                  # 'pinned'
+                  ]
 
 
 class NoteArchiveForm(ModelForm):

@@ -29,11 +29,11 @@
                     <label class="col-xs-1" for="id_public">Public:</label>
                     <div class="col-xs-1">{{ form.public| add_class:"form-control" }}</div>
                 </div>
-                <div class="form-group">
-                    {% error_messages form.pinned.errors %}
-                    <label class="col-xs-1" for="id_pinned">Pinned:</label>
-                    <div class="col-xs-1">{{ form.pinned }}</div>
-                </div>
+                {#                <div class="form-group">#}
+                {#                    {% error_messages form.pinned.errors %}#}
+                {#                    <label class="col-xs-1" for="id_pinned">Pinned:</label>#}
+                {#                    <div class="col-xs-1">{{ form.pinned }}</div>#}
+                {#                </div>#}
 
                 <button type="submit" class="btn btn-default pull-right">Publish</button>
             </form>

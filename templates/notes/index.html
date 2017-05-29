@@ -22,7 +22,7 @@
                     <div class="note-content">
                         <h3>
                             <a href="{% url 'notes:detail' note.id %}">{{ note.note_title|truncatechars:255|title|urlize }}</a>
-                            <span class="pull-right">{% if note.pinned %}&#128204;{% endif %}</span>
+                            {#                            <span class="pull-right">{% if note.pinned %}&#128204;{% endif %}</span>#}
                         </h3>
                         <p class="note-body">{{ note.note_text|truncatechars:255|linebreaks|urlize }}</p>
                         <p>Author: <a
