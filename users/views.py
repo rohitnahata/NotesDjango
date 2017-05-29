@@ -1,3 +1,6 @@
+# import requests
+
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -31,10 +34,22 @@ class SignupView(generic.View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
+            # recaptcha_response = request.POST.get('g-recaptcha-response')
+            # data = {
+            #     'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            #     'response': recaptcha_response
+            # }
+            # r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+            # result = r.json()
+            # print(result)
+            # ''' End reCAPTCHA validation '''
+
+            # if result['success']:
             new_user = authenticate(username=username, password=password, )
+            user.save()
             login(request, new_user)
             return HttpResponseRedirect(reverse('users:profile'))
         return render(request, self.template_name, {'form': form})

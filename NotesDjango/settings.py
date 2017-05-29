@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from decouple import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.stackexchange',
+    'allauth.socialaccount.providers.reddit',
     'django.contrib.humanize',
     'sslserver',
 ]
@@ -188,5 +191,12 @@ SOCIALACCOUNT_PROVIDERS = {
     'stackexchange': {
         'SITE': 'stackoverflow',
     },
+    'reddit': {
+        'AUTH_PARAMS': {'duration': 'permanent'},
+        'SCOPE': ['identity', 'submit'],
+        'USER_AGENT': 'django:myappid:1.0 (by /u/indianspartan)',
+    }
 
 }
+
+GOOGLE_RECAPTCHA_SECRET_KEY = "6LdRSRYUAAAAAOnk5yomm1dI9BmQkJWTg_wIlMJ_"
