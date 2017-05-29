@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.stackexchange',
     'django.contrib.humanize',
     'sslserver',
-
 ]
 
 SITE_ID = 2
@@ -135,7 +137,7 @@ STATICFILES_DIRS = [
 ]
 
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 SOCIALACCOUNT_QUERY_EMAIL = True
 LOGIN_REDIRECT_URL = '/users/profile/'
 LOGIN_URL = '/users/login/'
@@ -177,5 +179,14 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
-    }
+    },
+    'github': {
+        'SCOPE': [
+            'user',
+        ],
+    },
+    'stackexchange': {
+        'SITE': 'stackoverflow',
+    },
+
 }
